@@ -7,22 +7,21 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 /* GET users listing. */
+function generateAccessToken(user){
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn : "1000s"})
+}
+
 router.post('/', async function(req, res, next) {
+  console.log('ok');
   try {
     const {email, password} = req.body
-    const user = await DB.collection("users").findOne({email})
+    const user = await DB.collection("users").findOne({"email":email, "password":password})
     if(!user){
       res.status(401).send("L'utilisateur n'est pas autorisé")
       return
     }
 
-    function generateAccessToken(user){
-      return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn : "1000s"})
-    }
-
     const accessToken = generateAccessToken(user);
-
-    /* sessionStorage.setItem("authToken", accessToken) */
     
     res.send({accessToken});
   } catch (error) {

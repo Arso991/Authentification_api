@@ -18,7 +18,6 @@ const authentification = async (req, res, next) => {
                 return res.status(401)
             }
             req.user = data
-            console.log(data);
             next()
         })
     } 

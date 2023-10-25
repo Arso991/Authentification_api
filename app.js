@@ -2,12 +2,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const authentification = require("./middelwares/authentification")
+const authentification = require("./middlewares/authentification")
 const cors = require('cors')
 const bodyParser = require("body-parser")
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+let uploadsRouter = require('./routes/uploads')
 
 var app = express();
 
@@ -26,7 +27,8 @@ app.use(function(req, res, next){
     next()
 });
 
-app.use('/index', authentification, indexRouter);
+app.use('/index', /* authentification, */ indexRouter);
 app.use('/users', usersRouter);
+app.use('/uploads', uploadsRouter)
 
 module.exports = app;
